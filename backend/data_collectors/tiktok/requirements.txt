@@ -1,0 +1,4 @@
+mongoengine==0.19.1
+dnspython
+TikTokApi
+pyppeteer
