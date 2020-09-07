@@ -16,7 +16,7 @@ def lambda_handler(event, context):
         tiktoks = api.byUsername(user.username)
         for tiktok in tiktoks:
             r = requests.get(f"https://www.tiktok.com/oembed?url=https://www.tiktok.com/@{user.username}/video/{tiktok['id']}")
-            my_json = r.content.decode('utf8').replace("'", '"')
-            data = json.loads(my_json)
-            new_tiktok = TikTok(version=data['version'], title=data['title'], author_url=data['author_url'], author_name=data['author_name'], html=data['html'], thumbnail_url=data['thumbnail_url'], provider_url=data['provider_url'], provider_name=data['provider_name'])
-            new_tiktok.save()
+            if r.content != b'{"status_msg":"Something went wrong"}':
+                my_json = r.content.decode('utf8')
+                data = json.loads(my_json)
+                new_tiktok = TikTok.objects(video_id=tiktok['id']).update_one(set__version=data['version'], set__title=data['title'], set__author_url=data['author_url'], set__author_name=data['author_name'], set__html=data['html'], set__thumbnail_url=data['thumbnail_url'], set__provider_url=data['provider_url'], set__provider_name=data['provider_name'], upsert=True)

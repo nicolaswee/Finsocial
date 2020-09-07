@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: finsocial
+    app.kubernetes.io/instance: finsocial-instance
+    app.kubernetes.io/version: '1.0.0'
+    app.kubernetes.io/managed-by: kubectl
+  namespace: default
+  name: finsocial-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: finsocial
+  template:
+    metadata:
+      labels:
+        app: finsocial
+    spec:
+      containers:
+        - image: 795509366146.dkr.ecr.ap-southeast-1.amazonaws.com/finsocial:v1
+          imagePullPolicy: Always
+          name: finsocial
+          ports:
+            - containerPort: 5000

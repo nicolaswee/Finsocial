@@ -4,6 +4,8 @@ WORKDIR /app
 
 ADD . /app
 
+COPY .env ./.env
+
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
